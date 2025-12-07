@@ -1,7 +1,7 @@
 <?php include '../inc/dashHeader.php'; ?>
 <?php
 // Include config file
-require_once "../config.php";
+require_once __DIR__.'/../../config.php';
 
 ob_start();
 $input_email = $email_err = $email = "";
@@ -12,7 +12,7 @@ $input_membership_id = $membership_id = "";
 $input_staff_id = $staff_id = "";
 
 // Processing form data when form is submitted
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     // Validate and sanitize email
     if (empty($_POST['email'])) {
         $email_err = 'Email is required';
@@ -25,23 +25,18 @@ if(isset($_POST['submit'])){
 
     // Validate and sanitize register date
     // Validate and sanitize register date
-$register_date = $_POST['register_date'];
-$date_format = 'Y-m-d';
+    $register_date = $_POST['register_date'];
+    $date_format = 'Y-m-d';
 
-if (!empty($register_date)) {
-    // Convert the register date to a DateTime object
-    $register_date_obj = new DateTime($register_date);
+    if (!empty($register_date)) {
+        // Convert the register date to a DateTime object
+        $register_date_obj = new DateTime($register_date);
 
-    // Check if the date format is valid
-    if (!date_format($register_date_obj, $date_format)) {
-        $register_date_err = 'Invalid date format';
+        // Check if the date format is valid
+        if (!date_format($register_date_obj, $date_format)) {
+            $register_date_err = 'Invalid date format';
+        }
     }
-}
-
-
-
-
-
     // Validate and sanitize phone number
     if (empty($_POST['phone_number'])) {
         $phone_number_err = 'Phone number is required';
@@ -62,14 +57,14 @@ if (!empty($register_date)) {
 
     // If there are no errors, insert the data into the database
     if (empty($email_err) && empty($register_date_err) && empty($phone_number_err) && empty($password_err)) {
-        $conn = new mysqli("localhost", "root", "", "restaurantdb");
+        $conn = new mysqli(DB_HOST, DB_NAME, DB_PASS, DB_NAME);
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
 
-$insert_query = "INSERT INTO Accounts  (email, register_date, phone_number, password, membership_id, staff_id) VALUES (?, ?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($insert_query);
-$stmt->bind_param("ssssss", $email, $register_date, $phone_number, $password, $membership_id, $staff_id);
+        $insert_query = "INSERT INTO Accounts  (email, register_date, phone_number, password, membership_id, staff_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($insert_query);
+        $stmt->bind_param("ssssss", $email, $register_date, $phone_number, $password, $membership_id, $staff_id);
 
         if ($stmt->execute()) {
             // Success, redirect to success page or do something else
@@ -84,13 +79,21 @@ $stmt->bind_param("ssssss", $email, $register_date, $phone_number, $password, $m
     }
 }
 ?>
+
 <head>
     <meta charset="UTF-8">
     <title>Create New Member Account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 1300px; padding-left: 200px; padding-top: 80px  }
+        body {
+            font: 14px sans-serif;
+        }
+
+        .wrapper {
+            width: 1300px;
+            padding-left: 200px;
+            padding-top: 80px
+        }
     </style>
 </head>
 
@@ -103,9 +106,9 @@ $stmt->bind_param("ssssss", $email, $register_date, $phone_number, $password, $m
         <div class="form-group">
             <label for="email" class="form-label">Email :</label>
             <input type="text" name="email" class="form-control <?php echo !$email_Err ?:
-                'is-invalid'; ?>" id="email" required email="email" placeholder="johnny@dining.bar.com" value="<?php echo $email; ?>"><br>
+                                                                    'is-invalid'; ?>" id="email" required email="email" placeholder="johnny@dining.bar.com" value="<?php echo $email; ?>"><br>
             <div id="validationServerFeedback" class="invalid-feedback">
-            Please provide a valid email.
+                Please provide a valid email.
             </div>
         </div>
 
@@ -132,7 +135,7 @@ $stmt->bind_param("ssssss", $email, $register_date, $phone_number, $password, $m
                 <?php echo $password_err; ?>
             </div>
         </div>
-   
+
         <div class="form-group">
             <label for="member_id">Member ID:</label>
             <input placeholder="1" min=1 type="number" name="member_id" id="member_id" class="form-control" value="<?php echo $member_id; ?>">
