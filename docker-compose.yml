@@ -1,0 +1,30 @@
+name: restaurant-pos
+
+services:
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: restaurantDb
+      MYSQL_ROOT_PASSWORD: strong_password
+    volumes:
+      - db-data:/var/lib/mysql
+
+  app:
+    image: restaurant-pos:latest
+    ports:
+      - 80:80
+    volumes:
+      - app-data:/var/www/html
+    # Just simulating production environment
+    depends_on:
+      - db
+    env_file:
+      - path: .env
+        required: false
+
+volumes:
+  db-data:
+  app-data:
