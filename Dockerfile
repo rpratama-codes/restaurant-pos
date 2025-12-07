@@ -3,3 +3,4 @@ RUN docker-php-ext-install mysqli
 RUN a2enmod rewrite
 COPY . /var/www/html
 USER www-data
+EXPOSE 80
