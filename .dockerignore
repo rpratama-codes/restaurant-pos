@@ -5,3 +5,4 @@ node_modules
 .env
 # Don't include this. Let the Docker volume determine if it has it's file.
 setup_completed.flag
+restaurantDB.sql
