@@ -24,7 +24,8 @@ if (file_exists('setup_completed.flag')) {
     $link->select_db(DB_NAME);
 
     // Execute SQL statements from "restaurantdb.txt"
-    function executeSQLFromFile($filename, $link) {
+    function executeSQLFromFile($filename, $link)
+    {
         $sql = file_get_contents($filename);
 
         // Execute the SQL statements
@@ -38,7 +39,7 @@ if (file_exists('setup_completed.flag')) {
     }
 
     // Execute SQL statements from "restaurantdb.txt"
-    executeSQLFromFile(__DIR__ . '/migration/restaurantDB.sql', $link);
+    executeSQLFromFile('restaurantDB.sql', $link);
 
     // Close the database connection
     $link->close();
