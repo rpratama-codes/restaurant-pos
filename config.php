@@ -16,14 +16,14 @@ $db_name = $_ENV["DB_NAME"];
 
 // var_dump([$host, $user, $password, $db_name]);
 
-if (is_null($host) == 0 && is_null($user) == 0 && is_null($password) == 0 && is_null($db_name) == 0) {
+if (isset($host) && isset($user) && isset($password) && isset($db_name)) {
     define('DB_HOST', $host);
     define('DB_USER', $user);
     define('DB_PASS', $password);
     define('DB_NAME', $db_name);
 } else {
     define('DB_HOST', 'localhost');
-    define('DB_USER', '');
+    define('DB_USER', 'root');
     define('DB_PASS', '');
     define('DB_NAME', 'restaurant_db');
 }

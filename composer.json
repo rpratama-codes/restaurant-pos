@@ -7,6 +7,10 @@
             "email": "35159027+rpratama-codes@users.noreply.github.com"
         }
     ],
+    "scripts": {
+        "start": "php -S 127.0.0.1:8080 -t .",
+        "build": "docker build -t restaurant-pos:latest ."
+    },
     "require": {
         "vlucas/phpdotenv": "^5.6"
     }
