@@ -3,10 +3,7 @@
 if (file_exists('setup_completed.flag')) {
     echo "Setup has already been completed. The SQL setup won't run again.";
 } else {
-    define('DB_HOST', 'localhost');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
-
+    require_once './config.php';
     // Create Connection
     $link = new mysqli(DB_HOST, DB_USER, DB_PASS);
 
@@ -16,7 +13,7 @@ if (file_exists('setup_completed.flag')) {
     }
 
     // Create the 'restaurantdb' database if it doesn't exist
-    $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS restaurantdb";
+    $sqlCreateDB = "CREATE DATABASE IF NOT EXISTS " . DB_NAME;
     if ($link->query($sqlCreateDB) === TRUE) {
         echo "Database 'restaurantdb' created successfully.<br>";
     } else {
@@ -24,10 +21,11 @@ if (file_exists('setup_completed.flag')) {
     }
 
     // Switch to using the 'restaurantdb' database
-    $link->select_db('restaurantdb');
+    $link->select_db(DB_NAME);
 
     // Execute SQL statements from "restaurantdb.txt"
-    function executeSQLFromFile($filename, $link) {
+    function executeSQLFromFile($filename, $link)
+    {
         $sql = file_get_contents($filename);
 
         // Execute the SQL statements
@@ -41,7 +39,7 @@ if (file_exists('setup_completed.flag')) {
     }
 
     // Execute SQL statements from "restaurantdb.txt"
-    executeSQLFromFile('restaurantdb.txt', $link);
+    executeSQLFromFile('restaurantDB.sql', $link);
 
     // Close the database connection
     $link->close();

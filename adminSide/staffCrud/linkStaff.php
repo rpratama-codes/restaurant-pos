@@ -47,8 +47,9 @@
         <select id="staff_id" name="staff_id" required>
             <option value="">Select a staff</option>
             <?php
+            require_once __DIR__.'/../../config.php';
             // Assuming you have a database connection established
-            $conn = new mysqli($servername, $username, $password, $dbname);
+            $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);

@@ -1,0 +1,9 @@
+.git
+# there is no node_module on current project but it's requirement.
+node_modules 
+# I need for simulating environment variable for docker compose.
+.env
+# Don't include this. Let the Docker volume determine if it has it's file.
+setup_completed.flag
+restaurantDB.sql
+vendor

@@ -1,0 +1,75 @@
+name: restaurant-pos
+
+services:
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: restaurantDb
+      MYSQL_ROOT_PASSWORD: strong_password
+    volumes:
+      - db-data:/var/lib/mysql
+    depends_on:
+      - promtail
+      - loki
+      - grafana
+    labels:
+      logging: "promtail"
+
+  app:
+    image: rizqipratama1st/restaurant-pos:latest
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - app-data:/var/www/html
+    # Just simulating production environment
+    depends_on:
+      - db
+      - loki
+      - promtail
+      - grafana
+    env_file:
+      - path: .env
+        required: false
+    labels:
+      logging: "promtail"
+
+  loki:
+    image: grafana/loki:latest
+    restart: always
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./.config/loki-config.yaml:/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    restart: always
+    volumes:
+      - ./.config/promtail-config.yaml:/etc/promtail/config.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - loki
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./.config/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/loki.yaml
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - loki
+
+volumes:
+  db-data:
+  app-data:
+  grafana-data:

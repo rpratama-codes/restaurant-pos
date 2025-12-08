@@ -1,8 +1,5 @@
 <?php // Rememeber to change the username,password and database name to acutal values
-define('DB_HOST','localhost');
-define('DB_USER','root'); 
-define('DB_PASS','');
-define('DB_NAME','restaurantDB');
+require_once __DIR__.'/../config.php';
 
 //Create Connection
 $link = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
