@@ -4,11 +4,17 @@
  * I Dont know is it allow or not to modify the app directly,
  * but i need change some config to properly run the app. 
  */
+require_once __DIR__ . '/vendor/autoload.php';
 
-$host =  getenv("DB_HOST");
-$user =  getenv("DB_USER");
-$password = getenv("DB_PASS");
-$db_name = getenv("DB_NAME");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+
+$host =  $_ENV["DB_HOST"];
+$user =  $_ENV["DB_USER"];
+$password = $_ENV["DB_PASS"];
+$db_name = $_ENV["DB_NAME"];
+
+// var_dump([$host, $user, $password, $db_name]);
 
 if (is_null($host) == 0 && is_null($user) == 0 && is_null($password) == 0 && is_null($db_name) == 0) {
     define('DB_HOST', $host);
