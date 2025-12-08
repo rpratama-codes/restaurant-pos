@@ -8,3 +8,4 @@ setup_completed.flag
 restaurantDB.sql
 vendor
 docs
+.config
